@@ -1,11 +1,9 @@
 # www.plus2net.com
 # download updated script at https://www.plus2net.com/python/tkinter-sqlite-insert.php
 from multiprocessing import Value
-import sqlite3
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
 
-my_conn = sqlite3.connect(dir_path+'/cbt_app.db')
+from database import connect_db
+my_conn = connect_db()
 
 #print("Opened database successfully");
 import tkinter  as tk

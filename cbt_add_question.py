@@ -1,14 +1,13 @@
 from multiprocessing import Value
-import sqlite3
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
 
-my_conn = sqlite3.connect(dir_path+'/cbt_app.db')
 
 #print("Opened database successfully");
 import tkinter  as tk
 from tkinter import messagebox 
 from tkinter import * 
+import sqlite3 
+from database import connect_db
+my_conn = connect_db()
 
 size_all = 30
 font_all='Arial 15'

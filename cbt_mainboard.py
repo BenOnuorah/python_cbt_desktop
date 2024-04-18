@@ -1,21 +1,24 @@
 # www.plus2net.com
 # download updated script at https://www.plus2net.com/python/tkinter-sqlite-insert.php
-import sqlite3
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-
-my_conn = sqlite3.connect(dir_path+'/cbt_app.db')
 
 #print("Opened database successfully");
 import tkinter  as tk 
 #from tkinter import * 
 from tkinter import ttk, messagebox 
 
+from database import connect_db
+my_conn = connect_db()
 
 #def create_test():
 #class SecondWindow(tk.Toplevel):
 
+
 import cbt_edit_test, cbt_add_question, cbt_mainboard_start_test
+
+
+
+#global loginid
+#loginid = ""
 
 
 def donothing():
@@ -25,9 +28,13 @@ class AllTest(tk.Toplevel):
 
     
 
-    def __init__(self,*args, title="Test Mainboard", **kwargs):   
-        super().__init__(*args, **kwargs)
+    def __init__(self,master, *args, title="Test Mainboard", **kwargs):   
+        super().__init__(*args, master, **kwargs)
 
+        #global loginid
+        
+
+        #print (loginid)
         #self = tk.Tk()
         #self.geometry("600x300") 
         self.title(title)
@@ -131,6 +138,14 @@ class AllTest(tk.Toplevel):
             count_question = len(rec.fetchall())
             #count_question = rec.rowcount
 
+            #number of attempts of login user
+            loginid = self.master.loginid
+            batch_sql=(f"SELECT batch_number FROM cbt_test_score WHERE user_id={loginid} AND test_id={rec_id} ORDER By id")
+            batch_query = my_conn.execute(batch_sql)           
+            batch_record = batch_query.fetchall()
+            for batch_row in batch_record:
+                rec_status = batch_row[0]
+             
             ''' Use for login
             my_conn.execute('SELECT * FROM cbt_questions WHERE test_id=?', (rec_id,))
             row = my_conn.fetchone()
@@ -153,12 +168,18 @@ class AllTest(tk.Toplevel):
         # Get selected item to Edit
         selected_item = self.treev.selection()
         if selected_item:    
-            sel_id = self.treev.item(selected_item)['values'][0]    
-            #print (sel_id)
+            sel_id = self.treev.item(selected_item)['values'][0]  
 
-            self.val_id=sel_id
-            cbt_mainboard_start_test.Start(self)
-            #cbt_edit_test.EditTest(data=sel_id)
+            number_of_questions = self.treev.item(selected_item)['values'][3] 
+            if number_of_questions==0:
+                messagebox.showwarning("Warning", "Selected test has no question.")
+            else:   
+                #print (sel_id)
+                loginid = self.master.loginid
+                self.login_id=loginid
+                self.val_id=sel_id
+                cbt_mainboard_start_test.Start(self)
+                #cbt_edit_test.EditTest(data=sel_id)
         else:
             messagebox.showwarning("Warning", "Please select a test to add question.")
 

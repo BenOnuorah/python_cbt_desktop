@@ -1,13 +1,11 @@
-import sqlite3
-import os
-dir_path = os.path.dirname(os.path.realpath(__file__))
-
-my_conn = sqlite3.connect(dir_path+'/cbt_app.db')
-
 #print("Opened database successfully");
+from doctest import master
 import tkinter  as tk 
 from tkinter import messagebox
 from tkinter import * 
+
+from database import connect_db
+my_conn = connect_db()
 
 import cbt_mainboard
 
@@ -77,8 +75,8 @@ class CBT_Login(tk.Toplevel):
 
             
             messagebox.showinfo("Welcome", "Welcome to login")
-            cbt_mainboard.AllTest()
-            self.destroy()
+            cbt_mainboard.AllTest(self)
+            self.withdraw()
             
         # You can add your own validation logic here
         #if userid == "admin" and password == "password":
