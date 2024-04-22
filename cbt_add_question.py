@@ -80,8 +80,9 @@ class AddQuestion(tk.Toplevel):
     ent5 = tk.Entry(self, width=size_all)    
     #blank_lbl5 = tk.Label(self, text = "\n")
 
-    lbl6 = tk.Label(self,   text = "Select Correct Option 4", anchor="w", justify="left", width=size_all )
+    lbl6 = tk.Label(self,   text = "Select Correct Option", anchor="w", justify="left", width=size_all )
     
+    '''
     check1 = tk.IntVar()
     check2 = tk.IntVar()
     check3 = tk.IntVar()
@@ -92,6 +93,14 @@ class AddQuestion(tk.Toplevel):
     r2 = tk.Checkbutton(self, text="B", variable=check2)
     r3 = tk.Checkbutton(self, text="C", variable=check3)
     r4 = tk.Checkbutton(self, text="D", variable=check4)
+    '''
+
+    check = IntVar()
+    r1 = tk.Radiobutton(self, text="A", variable=check, value=1) 
+    r2 = tk.Radiobutton(self, text="B", variable=check, value=2)
+    r3 = tk.Radiobutton(self, text="C", variable=check, value=3)
+    r4 = tk.Radiobutton(self, text="D", variable=check, value=4)
+
    # blank_lbl6 = tk.Label(self, text = "\n")
     
    
@@ -156,12 +165,16 @@ class AddQuestion(tk.Toplevel):
         ans3=ent4.get()
         ans4=ent5.get()
 
+        '''
         opt1=check1.get() 
         opt2=check2.get()
         opt3=check3.get()
         opt4=check4.get()
+        '''
 
-        right_opt= f"{opt1}{opt2}{opt3}{opt4}"
+        right_opt = check.get()
+
+        #right_opt= f"{opt1}{opt2}{opt3}{opt4}"
         explain=ent7.get() 
 
                    

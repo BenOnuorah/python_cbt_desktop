@@ -29,6 +29,8 @@ class EditTest(tk.Toplevel):
     rec_test_name = record[1].strip()
     rec_class_name = record[2]
     rec_status = record[3]
+    percentage = record[4]
+    instruction = record[5]
    
 
     #print ("I am printing here "+ str(val_id))
@@ -57,10 +59,23 @@ class EditTest(tk.Toplevel):
 
     
 
-    lbl1 = tk.Label(self, text = "Name", anchor="w", justify="left", width=size_all, font=(font_all))
+    lbl1 = tk.Label(self, text = "Test Name", anchor="w", justify="left", width=size_all, font=(font_all))
     ent1 = tk.Entry(self, width=size_all, font=(font_all))    
     ent1.insert(0, rec_test_name) 
     blank_lbl1 = tk.Label(self, text = "\n")
+
+
+    lbla = tk.Label(self, text = "Pass Percentage", anchor="w", justify="left", width=size_all, font=(font_all))
+    enta = tk.Entry(self, width=size_all, font=(font_all))    
+    enta.insert(0, percentage) 
+    blank_lbla = tk.Label(self, text = "\n")
+
+
+    lblb = tk.Label(self, text = "Instruction", anchor="w", justify="left", width=size_all, font=(font_all))
+    entb = tk.Entry(self, width=size_all, font=(font_all))    
+    entb.insert(0, instruction) 
+    blank_lblb = tk.Label(self, text = "\n")
+
 
     lbl2 = tk.Label(self, text = "Class", anchor="w", justify="left", width=size_all, font=(font_all))
     #ent2 = tk.Entry(self, width=size_all, font=(font_all))
@@ -102,9 +117,13 @@ class EditTest(tk.Toplevel):
     ent1.pack()
     blank_lbl1.pack()
 
-    #lbl2.pack()
-    #ent2.pack()
-    #blank_lbl2.pack()
+    lbla.pack()
+    enta.pack()
+    blank_lbla.pack()
+
+    lblb.pack()
+    entb.pack()
+    blank_lblb.pack()
 
     lbl3.pack()
     ent3.pack()
@@ -125,10 +144,12 @@ class EditTest(tk.Toplevel):
     def add_update():
         
             record_id=rec_id 
-            test_name=ent1.get()
-            #test_class=ent2.get()
+            test_name=ent1.get()            
             test_class=options.get()
             test_status=ent3.get()
+
+            pass_percent=enta.get()
+            instruct=entb.get()
             
 
             # read name
@@ -142,7 +163,7 @@ class EditTest(tk.Toplevel):
             print (test_status)  
 
             #UPDATE messages SET name='$volume_title', detail='$message_edit'  WHERE id = '$edit_id'    
-            my_conn.execute(f"UPDATE cbt_test SET test_name='{test_name}', class_name='{test_class}', test_status='{test_status}' WHERE id={record_id} ")
+            my_conn.execute(f"UPDATE cbt_test SET pass_percent='{pass_percent}', instruction='{instruct}', test_name='{test_name}', class_name='{test_class}', test_status='{test_status}' WHERE id={record_id} ")
             my_conn.commit() 
 
             messagebox.showinfo("Record updated", "Your record is now updated.")
@@ -205,8 +226,7 @@ class EditTest(tk.Toplevel):
 
   '''  
 
-'''
+
 if __name__ == "__main__":
     self = EditTest(10)
     self.mainloop()     
-'''

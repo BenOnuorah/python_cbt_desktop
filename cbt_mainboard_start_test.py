@@ -218,7 +218,8 @@ class Start(tk.Toplevel):
 
                 self.login_id=user_login_id
                 self.test_id=val_id
-                self.batch_num=batch_num
+                self.val_id=batch_num
+
                 cbt_result_detail.Detail(self)
                 self.withdraw()
                 #cbt_mainboard.AllTest()

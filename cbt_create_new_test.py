@@ -1,6 +1,8 @@
 
 #print("Opened database successfully");
-import tkinter  as tk 
+from multiprocessing.sharedctypes import Value
+import tkinter  as tk
+from tkinter import ttk, messagebox  
 from tkinter import * 
 import sqlite3 
 from database import connect_db
@@ -47,16 +49,36 @@ class CreateTest(tk.Toplevel):
     t1 = tk.Text(self,  height=1, width=30) 
     t1.grid(row=5,column=2) 
 
-    #entry 2
+    # entry 2
+    l1_1 = tk.Label(self,  text='Pass percent:\n e.g 50 (50%)', width=20, anchor="c" )  
+    l1_1.grid(row=6,column=1) 
+
+    t1_1 = tk.Text(self,  height=1, width=30) 
+    t1_1.grid(row=6,column=2) 
+
+    
+
+    #entry 3
     l2 = tk.Label(self,  text='Class: ', width=20 )  
-    l2.grid(row=6,column=1) 
+    l2.grid(row=7,column=1) 
 
     # add list box for selection of class
     options = StringVar(self)
     options.set("") # default value
     opt1 = OptionMenu(self, options, "Class 1", "Class 2", "Class 3", "Class 4", "Class 5", "Class 6")
     opt1.config(width=20)
-    opt1.grid(row=6,column=2)
+    opt1.grid(row=7,column=2)
+
+
+     # entry 2
+    l8 = tk.Label(self,  text='Instrction', width=20, anchor="c" )  
+    l8.grid(row=8, column=1) 
+
+    t8 = tk.Text(self,  height=5, width=30) 
+    scroll = tk.Scrollbar(self) 
+    t8.configure(yscrollcommand=scroll.set) 
+    scroll.config(command=t8.yview) 
+    t8.grid(row=8,column=2) 
 
     #entry 3
     '''
@@ -70,18 +92,18 @@ class CreateTest(tk.Toplevel):
     #enry 4
     
     lbl_gender = tk.Label(self,  text='Status: ', width=10 )  
-    lbl_gender.grid(row=8,column=1) 
+    lbl_gender.grid(row=9,column=1) 
     radio_v = tk.StringVar()
 
     radio_v.set('once')
     r1 = tk.Radiobutton(self, text='Take one time', variable=radio_v, value='once')
-    r1.grid(row=8,column=2)
+    r1.grid(row=9,column=2)
     r2 = tk.Radiobutton(self, text='Take multiple times', variable=radio_v, value='multiple')
-    r2.grid(row=8,column=3)
+    r2.grid(row=9,column=3)
 
 
-    b1 = tk.Button(self,  text='Add Record', width=20, command=lambda: add_data())  
-    b1.grid(row=10,column=2) 
+    b1 = tk.Button(self,  text='Create', width=20, command=lambda: add_data())  
+    b1.grid(row=11,column=2) 
 
 
 
@@ -96,6 +118,10 @@ class CreateTest(tk.Toplevel):
         #my_mark=t3.get("1.0",END) # read mark
         test_status=radio_v.get()   # read gender 
         # length of my_name , my_class and my_gender more than 2 
+
+        pass_percent=t1_1.get("1.0",END)
+        instruction=t8.get("1.0",END)
+
         if(len(test_name) < 2 or len(class_name)<2  or len(test_status) < 2 ):
                 flag_validation=False 
         #try:
@@ -107,11 +133,11 @@ class CreateTest(tk.Toplevel):
 
 
         if(flag_validation):
-            my_str.set("Adding data...")
+            #my_str.set("Adding data...")
             try:
                 #print("Connected to database successfully")
-                my_data=(None,test_name,class_name,test_status)
-                my_query="INSERT INTO cbt_test values(?,?,?,?)"
+                my_data=(None,test_name,class_name,test_status,pass_percent,instruction)
+                my_query="INSERT INTO cbt_test values(?,?,?,?,?,?)"
                 my_conn.execute(my_query,my_data)
                 my_conn.commit()
                 #x=my_conn.execute('''select last_insert_rowid()''')
@@ -121,19 +147,22 @@ class CreateTest(tk.Toplevel):
                 l5.config(bg='white') # background color 
 
                 #my_str.set("ID:" + str(id[0]))
-                my_str.set("Recorded added")
+                messagebox.showinfo("Record updated", "Your record is now updated.")
+              
+                #my_str.set("Recorded added")
 
-                l5.after(3000, lambda: l5.grid_remove() )
+                #l5.after(3000, lambda: l5.grid_remove() )
                 t1.delete('1.0',END)  # reset the text entry box
                 #t3.delete('1.0',END)  # reset the text entry box   
 
             except sqlite3.Error as my_error:
-                l5.grid() 
+                #l5.grid() 
                 #return error
-                l5.config(fg='red')   # foreground color
-                l5.config(bg='yellow') # background color
+                #l5.config(fg='red')   # foreground color
+                #l5.config(bg='yellow') # background color
+                messagebox.showwarning("Error", my_error)
                 print(my_error)
-                my_str.set(my_error)    
+                #my_str.set(my_error)    
 
         else:
             l5.grid() 
@@ -143,8 +172,7 @@ class CreateTest(tk.Toplevel):
             l5.after(3000, lambda: l5.grid_remove() )
 
        
-''''
+
 if __name__ == "__main__":
     self = CreateTest()
     self.mainloop()     
-'''

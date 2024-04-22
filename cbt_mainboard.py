@@ -13,7 +13,7 @@ my_conn = connect_db()
 #class SecondWindow(tk.Toplevel):
 
 
-import cbt_edit_test, cbt_add_question, cbt_mainboard_start_test
+import cbt_result_list, cbt_mainboard_start_test
 
 
 
@@ -191,8 +191,14 @@ class AllTest(tk.Toplevel):
             sel_id = self.treev.item(selected_item)['values'][0]    
             #print (sel_id)
 
-            self.val_id=sel_id
-            cbt_add_question.AddQuestion(self)
+            loginid = self.master.loginid
+
+            self.test_id=sel_id #test id
+            self.login_id=loginid
+            #self.test_id=val_id
+            self.batch_num=self.treev.item(selected_item)['values'][4] 
+
+            cbt_result_list.List(self)
             #cbt_edit_test.EditTest(data=sel_id)
         else:
             messagebox.showwarning("Warning", "Please select a test to add question.")
